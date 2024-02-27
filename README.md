@@ -21,10 +21,10 @@ To run the Quiz App locally on your machine, follow these steps:
 1. Clone the repository to your local machine: <br>
   git clone https://github.com/NepTech-Roshan/quiz_app.git
 2. Navigate to the project directory: <br>
-  cd quiz_app
-3.Open the `index.html` file in your web browser: <br>
-  open index.html
-4. 4. Start taking quizzes and test your knowledge!
+  cd quiz_app <br>
+3. Open the `index.html` file in your web browser: <br>
+  open index.html <br>
+4. Start taking quizzes and test your knowledge!
 
 ## Screenshots
 ![Quiz App Screenshot](assets/screenshots/screenshot.png)
