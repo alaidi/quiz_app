@@ -1,3 +1,26 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer components{
+    .btn {
+  @apply bg-slate-50 text-black px-4 py-2 rounded-md border border-black border-2 transition-all duration-300 cursor-pointer ;
+         }
+}
+
+.btn:hover:not(disabled){
+background:#000000;
+color:#fff;
+}
+.btn:disabled{
+cursor:no-drop;
+}
+
+/*External CSS class*/
+
+.correct{
+  background:#9aeabc;
+}
+.incorrect{
+  background:#ff9393;
+}

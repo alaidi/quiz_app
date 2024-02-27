@@ -8,15 +8,19 @@
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body class="min-h-screen bg-slate-800 grid place-items-center ">
-  <section class="bg-slate-200 w-80 h-auto p-10 md:w-[60%] rounded-3xl">
-    <h1 class="text-4xl border-b-2  p-3 w-100 bg-blue-500 text-white grid place-content-center rounded-md">Quiz App</h1>
-    <div class="">
-      <h3 class="text-2xl p-4">Questions goes here . . .</h3>
-      <div class="flex flex-col gap-2">
-      <button class="btn bg-slate-50 text-black px-4 py-2 rounded-md border border-black border-2 hover:bg-black hover:text-white transition-all duration-300 cursor-pointer" onclick="clock()">Click me</button>
-     
+  <section class="app bg-slate-200 w-80 h-auto p-5 md:w-[60%] md:p-10 rounded-3xl">
+    <h1 class="text-4xl border-b-2  p-3 w-100 bg-blue-500 text-white grid place-content-center rounded-md">Easy Quiz</h1>
+    <div class="quiz">
+      <h3 id="question" class="text-2xl p-4">Questions goes here . . .</h3>
+   <!-- button style css added in input.css file located in src directory -->
+     <div id="answer-buttons" class="flex flex-col gap-2">
+       <!--The following button is already created using js -->
+<!--      <button class="btn"></button>
+     <button class="btn"></button>
+     <button class="btn"></button>
+     <button class="btn"></button> -->
       </div>
-      <button class="bg-blue-500 text-white px-6 py-3 my-4 rounded-md md:px-16 cursor-pointer hidden">Next</button>
+      <button id="next-btn" class="bg-blue-500 text-white px-6 py-3 my-4 rounded-md md:px-16 cursor-pointer hidden">Next</button>
     </div>
   </section>
 <script src="script/script.js">
