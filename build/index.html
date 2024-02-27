@@ -8,17 +8,18 @@
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body class="min-h-screen bg-slate-800 grid place-items-center ">
-  <section class="bg-slate-100 w-80 h-auto p-10 md:w-[60%] rounded-3xl">
-    <h1 class="text-4xl">Quiz App</h1>
+  <section class="bg-slate-200 w-80 h-auto p-10 md:w-[60%] rounded-3xl">
+    <h1 class="text-4xl border-b-2  p-3 w-100 bg-blue-500 text-white grid place-content-center rounded-md">Quiz App</h1>
     <div class="">
-      <h3 class="text-2xl">Questions goes here . . .</h3>
+      <h3 class="text-2xl p-4">Questions goes here . . .</h3>
       <div class="flex flex-col gap-2">
-      <button class="bg-blue-500 text-white px-4 py-2 rounded-md">Click me</button>
-      <button class="bg-blue-500 text-white px-4 py-2 rounded-md">Click me</button>
-      <button class="bg-blue-500 text-white px-4 py-2 rounded-md">Click me</button>
-      <button class="bg-blue-500 text-white px-4 py-2 rounded-md">Click me</button>
+      <button class="btn bg-slate-50 text-black px-4 py-2 rounded-md border border-black border-2 hover:bg-black hover:text-white transition-all duration-300 cursor-pointer" onclick="clock()">Click me</button>
+     
       </div>
+      <button class="bg-blue-500 text-white px-6 py-3 my-4 rounded-md md:px-16 cursor-pointer hidden">Next</button>
     </div>
   </section>
+<script src="script/script.js">
+</script>
 </body>
 </html>
