@@ -6,24 +6,149 @@
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>Quiz | App</title>
   <link rel="stylesheet" href="css/style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <!-- Add Remix icons -->
+  <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
 </head>
-<body class="min-h-screen bg-slate-800 grid place-items-center ">
-  <section class="app bg-slate-200 w-80 h-auto p-5 md:w-[60%] md:p-10 rounded-3xl">
-    <h1 class="text-4xl border-b-2  p-3 w-100 bg-blue-500 text-white grid place-content-center rounded-md">Easy Quiz</h1>
-    <div class="quiz">
-      <h3 id="question" class="text-2xl p-4">Questions goes here . . .</h3>
-   <!-- button style css added in input.css file located in src directory -->
-     <div id="answer-buttons" class="flex flex-col gap-2">
-       <!--The following button is already created using js -->
-<!--      <button class="btn"></button>
-     <button class="btn"></button>
-     <button class="btn"></button>
-     <button class="btn"></button> -->
+<body class="min-h-screen transition-colors duration-300" data-theme="default">
+  <!-- Theme Selector - Now top left -->
+  <div class="fixed top-4 left-4 z-50">
+    <div class="relative">
+     
+      <div id="theme-menu" class="hidden absolute left-0 mt-2 w-56 rounded-xl border shadow-xl border-white/10">
+        <div class="p-3 space-y-2">
+          <button class="px-4 py-3 w-full text-left rounded-lg transition-colors theme-option" data-theme="default">
+            <i class="mr-2 ri-contrast-2-line"></i>Default
+          </button>
+          <button class="px-4 py-3 w-full text-left rounded-lg transition-colors theme-option" data-theme="ocean">
+            <i class="mr-2 ri-water-flash-line"></i>Ocean
+          </button>
+          <button class="px-4 py-3 w-full text-left rounded-lg transition-colors theme-option" data-theme="forest">
+            <i class="mr-2 ri-plant-line"></i>Forest
+          </button>
+          <button class="px-4 py-3 w-full text-left rounded-lg transition-colors theme-option" data-theme="sunset">
+            <i class="mr-2 ri-sun-line"></i>Sunset
+          </button>
+          <button class="px-4 py-3 w-full text-left rounded-lg transition-colors theme-option" data-theme="purple">
+            <i class="mr-2 ri-moon-clear-line"></i>Purple Night
+          </button>
+        </div>
       </div>
-      <button id="next-btn" class="bg-blue-500 text-white px-6 py-3 my-4 rounded-md md:px-16 cursor-pointer hidden">Next</button>
     </div>
-  </section>
-<script src="script/script.js">
-</script>
+  </div>
+
+  <!-- Background gradient overlay -->
+  <div class="fixed inset-0 opacity-20" style="background: radial-gradient(circle at 50% -20%, var(--primary), transparent)"></div>
+
+  <!-- Center the main quiz content -->
+  <div class="flex justify-center items-center p-4 min-h-screen">
+    <section class="relative p-8 w-full max-w-3xl rounded-3xl border shadow-2xl backdrop-blur-xl app bg-slate-800/30 border-white/10">
+      <!-- Decorative elements -->
+      <div class="overflow-hidden absolute top-0 left-0 w-full h-full rounded-3xl">
+        <div class="absolute -top-1/2 -left-1/2 w-full h-full bg-gradient-to-br to-transparent rotate-45 from-blue-500/10"></div>
+        <div class="absolute -right-1/2 -bottom-1/2 w-full h-full bg-gradient-to-br to-transparent rotate-45 from-cyan-500/10"></div>
+      </div>
+
+      <!-- Content -->
+      <div class="relative">
+        <div class="mb-5 text-center">
+          <h3 class="mb-2 text-xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-300">
+            College Of Computer Science and Information Technology
+          </h3>
+         
+        </div>
+
+        <div class="flex justify-between p-6 mb-8 rounded-2xl border scores bg-slate-700/30 border-white/5">
+          <div class="team-score team-a">
+            <div class="flex justify-between items-center mb-4">
+              <h3 class="flex items-center text-lg text-cyan-300">
+                <i class="mr-2 ri-team-fill"></i>Team A
+              </h3>
+              <button id="team-a-theme-btn" class="flex items-center px-3 py-1 text-sm rounded-lg theme-btn">
+                <i class="mr-2 ri-palette-line"></i>
+                Theme: <span class="ml-1 team-a-theme-indicator">default</span>
+              </button>
+            </div>
+            <div id="team-a-theme-menu" class="hidden absolute mt-2 w-48 rounded-xl border shadow-xl theme-menu border-white/10" data-team="teamA">
+              <div class="p-2 space-y-1">
+                <button class="px-3 py-2 w-full text-left rounded-lg transition-colors theme-option" data-theme="default">
+                  <i class="mr-2 ri-contrast-2-line"></i>Default
+                </button>
+                <button class="px-3 py-2 w-full text-left rounded-lg transition-colors theme-option" data-theme="ocean">
+                  <i class="mr-2 ri-water-flash-line"></i>Ocean
+                </button>
+                <button class="px-3 py-2 w-full text-left rounded-lg transition-colors theme-option" data-theme="forest">
+                  <i class="mr-2 ri-plant-line"></i>Forest
+                </button>
+                <button class="px-3 py-2 w-full text-left rounded-lg transition-colors theme-option" data-theme="sunset">
+                  <i class="mr-2 ri-sun-line"></i>Sunset
+                </button>
+                <button class="px-3 py-2 w-full text-left rounded-lg transition-colors theme-option" data-theme="purple">
+                  <i class="mr-2 ri-moon-clear-line"></i>Purple Night
+                </button>
+              </div>
+            </div>
+            <span id="team-a-score" class="text-4xl font-bold text-white">0</span>
+          </div>
+          <div class="self-center px-6 py-3 rounded-full border vs-badge bg-slate-600/50 border-white/10">
+            <span class="font-semibold text-white/60">VS</span>
+          </div>
+          <div class="text-right team-score team-b">
+            <div class="flex justify-between items-center mb-4">
+              <button id="team-b-theme-btn" class="flex items-center px-3 py-1 text-sm rounded-lg theme-btn">
+                <i class="mr-2 ri-palette-line"></i>
+                Theme: <span class="ml-1 team-b-theme-indicator">default</span>
+              </button>
+              <h3 class="flex items-center text-lg text-blue-300">
+                Team B<i class="ml-2 ri-team-fill"></i>
+              </h3>
+            </div>
+            <div id="team-b-theme-menu" class="hidden absolute mt-2 w-48 rounded-xl border shadow-xl theme-menu border-white/10" data-team="teamB">
+              <div class="p-2 space-y-1">
+                <button class="px-3 py-2 w-full text-left rounded-lg transition-colors theme-option" data-theme="default">
+                  <i class="mr-2 ri-contrast-2-line"></i>Default
+                </button>
+                <button class="px-3 py-2 w-full text-left rounded-lg transition-colors theme-option" data-theme="ocean">
+                  <i class="mr-2 ri-water-flash-line"></i>Ocean
+                </button>
+                <button class="px-3 py-2 w-full text-left rounded-lg transition-colors theme-option" data-theme="forest">
+                  <i class="mr-2 ri-plant-line"></i>Forest
+                </button>
+                <button class="px-3 py-2 w-full text-left rounded-lg transition-colors theme-option" data-theme="sunset">
+                  <i class="mr-2 ri-sun-line"></i>Sunset
+                </button>
+                <button class="px-3 py-2 w-full text-left rounded-lg transition-colors theme-option" data-theme="purple">
+                  <i class="mr-2 ri-moon-clear-line"></i>Purple Night
+                </button>
+              </div>
+            </div>
+            <span id="team-b-score" class="text-4xl font-bold text-white">0</span>
+          </div>
+        </div>
+
+        <!-- <div class="flex justify-between items-center mb-8">
+          <div class="relative">
+            <button id="category-selector" class="flex items-center px-4 py-2 rounded-lg border transition-colors bg-slate-700/50 border-white/10 hover:bg-slate-600/50">
+              <i class="mr-2 ri-book-line"></i>
+              <span id="current-category">General Knowledge</span>
+              <i class="ml-2 ri-arrow-down-s-line"></i>
+            </button>
+            <div id="category-menu" class="hidden absolute left-0 mt-2 w-56 rounded-xl border shadow-xl bg-slate-800 border-white/10">
+              <div class="p-2 space-y-1">
+               
+              </div>
+            </div>
+          </div>
+        </div> -->
+
+        <div class="space-y-6 quiz-container">
+          <h3 id="question" class="p-6 mb-8 text-2xl text-white rounded-2xl border bg-slate-700/30 question-text border-white/5"></h3>
+          <div id="answer-buttons" class="grid grid-cols-1 gap-4 md:grid-cols-2"></div>
+          <button id="next-btn" class="hidden py-4 mt-8 w-full font-semibold text-white bg-gradient-to-r from-blue-500 to-cyan-500 rounded-xl transition-all duration-300 transform hover:scale-105 hover:shadow-lg hover:shadow-blue-500/25"></button>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script src="script/script.js"></script>
 </body>
 </html>

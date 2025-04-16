@@ -2,25 +2,266 @@
 @tailwind components;
 @tailwind utilities;
 
-@layer components{
-    .btn {
-  @apply bg-slate-50 text-black px-4 py-2 rounded-md border border-black border-2 transition-all duration-300 cursor-pointer ;
-         }
+@layer base {
+  :root {
+    --primary: #60a5fa;
+    --secondary: #67e8f9;
+    --accent: #3b82f6;
+    --background-start: #0f172a;
+    --background-middle: #164e63;
+    --background-end: #0f172a;
+  }
+
+  body {
+    @apply min-h-screen transition-colors duration-300;
+    background: linear-gradient(
+      to bottom right,
+      var(--background-start),
+      var(--background-middle),
+      var(--background-end)
+    );
+  }
 }
 
-.btn:hover:not(disabled){
-background:#000000;
-color:#fff;
-}
-.btn:disabled{
-cursor:no-drop;
+@layer components {
+  .theme-option {
+    @apply transition-colors hover:bg-white/10;
+  }
+
+  #theme-menu {
+    @apply backdrop-blur-sm bg-slate-800/90;
+  }
 }
 
-/*External CSS class*/
-
-.correct{
-  background:#9aeabc;
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
-.incorrect{
-  background:#ff9393;
+
+@keyframes bounceIn {
+  0% {
+    opacity: 0;
+    transform: scale(0.3);
+  }
+  50% {
+    opacity: 0.9;
+    transform: scale(1.1);
+  }
+  80% {
+    opacity: 1;
+    transform: scale(0.89);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Glow effects */
+.glow {
+  position: relative;
+}
+
+.glow::after {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  background: linear-gradient(45deg, #3b82f6, #06b6d4);
+  filter: blur(15px);
+  z-index: -1;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.glow:hover::after {
+  opacity: 0.5;
+}
+
+/* Enhanced animations */
+@keyframes correctAnswer {
+  0% { transform: scale(1); }
+  40% { transform: scale(1.05); }
+  60% { transform: scale(0.98); }
+  100% { transform: scale(1); }
+}
+
+@keyframes incorrectAnswer {
+  0% { transform: translateX(0); }
+  20% { transform: translateX(-8px); }
+  40% { transform: translateX(8px); }
+  60% { transform: translateX(-4px); }
+  80% { transform: translateX(4px); }
+  100% { transform: translateX(0); }
+}
+
+@keyframes selectedAnswer {
+  0% { transform: scale(0.95); opacity: 0.5; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+/* Floating animation for decorative elements */
+@keyframes float {
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(-20px); }
+  100% { transform: translateY(0px); }
+}
+
+.floating {
+  animation: float 6s ease-in-out infinite;
+}
+
+/* Theme-specific styles */
+.theme-default {
+    --team-color: theme('colors.blue.500');
+    --text-color: theme('colors.white');
+}
+
+.theme-ocean {
+    --team-color: theme('colors.cyan.400');
+    --text-color: theme('colors.white');
+}
+
+.theme-forest {
+    --team-color: theme('colors.green.400');
+    --text-color: theme('colors.white');
+}
+
+.theme-sunset {
+    --team-color: theme('colors.orange.400');
+    --text-color: theme('colors.white');
+}
+
+.theme-purple {
+    --team-color: theme('colors.purple.400');
+    --text-color: theme('colors.white');
+}
+
+.theme-neon {
+    --team-color: theme('colors.lime.400');
+    --text-color: theme('colors.white');
+}
+
+.theme-ruby {
+    --team-color: theme('colors.rose.500');
+    --text-color: theme('colors.white');
+}
+
+.theme-midnight {
+    --team-color: theme('colors.indigo.400');
+    --text-color: theme('colors.white');
+}
+
+/* Team specific elements */
+.team-a {
+    color: var(--team-color);
+}
+
+.team-b {
+    color: var(--team-color);
+}
+
+.theme-menu {
+    @apply absolute z-50 p-2 rounded-xl border shadow-lg bg-slate-800 border-white/10;
+    min-width: 200px;
+}
+
+.theme-option {
+    @apply px-3 py-2 w-full text-left text-white rounded-lg transition-colors hover:bg-slate-700;
+}
+
+/* Position fixes for theme menus */
+#team-a-theme-menu {
+    left: 0;
+    right: auto;
+}
+
+#team-b-theme-menu {
+    right: 0;
+    left: auto;
+}
+
+/* Team theme buttons */
+.team-theme-btn {
+    @apply flex items-center px-3 py-2 text-white rounded-lg transition-colors hover:bg-slate-700/50;
+}
+
+/* Team A's selection */
+.team-a-selected {
+    border: 2px solid var(--primary) !important;
+    background-color: rgba(96, 165, 250, 0.1) !important;
+}
+
+/* Team B's selection */
+.team-b-selected {
+    border: 2px solid var(--secondary) !important;
+    background-color: rgba(244, 114, 182, 0.1) !important;
+}
+
+/* Correct answer highlight */
+.correct {
+    border: 2px solid #4ade80 !important;
+    background-color: rgba(74, 222, 128, 0.1) !important;
+    animation: correctAnswer 0.5s ease-out;
+}
+
+/* Animation for correct answer */
+@keyframes correctAnswer {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
+}
+
+/* Basic button styling */
+.btn {
+    @apply overflow-hidden relative p-4 mb-4 w-full text-left rounded-xl border transition-all duration-300 bg-slate-800/50 border-white/10 hover:bg-slate-700/50;
+}
+
+/* Team turn badges */
+.team-turn-badge-a {
+    @apply inline-flex items-center px-3 py-1 text-sm text-blue-400 rounded-full bg-blue-500/20;
+}
+
+.team-turn-badge-b {
+    @apply inline-flex items-center px-3 py-1 text-sm text-cyan-400 rounded-full bg-cyan-500/20;
+}
+
+/* Glow effect */
+.glow {
+    box-shadow: 0 0 15px -3px rgba(59, 130, 246, 0.5);
+}
+
+/* Incorrect answer animation */
+.incorrect {
+    border: 2px solid #ef4444 !important;
+    background-color: rgba(239, 68, 68, 0.1) !important;
+    animation: incorrectAnswer 0.5s ease-out;
+}
+
+@keyframes incorrectAnswer {
+    0% { transform: translateX(0); }
+    20% { transform: translateX(-8px); }
+    40% { transform: translateX(8px); }
+    60% { transform: translateX(-4px); }
+    80% { transform: translateX(4px); }
+    100% { transform: translateX(0); }
+}
+
+/* Category dropdown styles */
+#category-menu {
+    z-index: 50;
+    backdrop-filter: blur(8px);
+    transform-origin: top;
+    transition: all 0.2s ease-out;
+}
+
+#category-menu.hidden {
+    opacity: 0;
+    transform: scale(0.95);
+    pointer-events: none;
 }
