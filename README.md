@@ -92,6 +92,9 @@ Contributions are welcome! Please feel free to submit issues or pull requests to
 - Add new features or quiz categories
 - Enhance UI/UX
 
+## Acknowledgments
+This project was inspired by [quiz_app](https://github.com/Roshan-Metrix/quiz_app) by Roshan-Metrix.
+
 ## License
 This project is available for use under the MIT License.
 
