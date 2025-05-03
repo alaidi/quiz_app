@@ -200,7 +200,60 @@ document.addEventListener('DOMContentLoaded', function() {
     const nextButton = document.getElementById("next-btn");
     const teamAScoreElement = document.getElementById("team-a-score");
     const teamBScoreElement = document.getElementById("team-b-score");
+    //  const teamAScore = document.getElementById('team-a-score');
+    // const teamBScore = document.getElementById('team-b-score');
+    const pyro = document.querySelector('.pyro');
+    const winnerModal = document.getElementById('winner-modal');
+     const winnerTeam = document.getElementById('winner-team');
+    const winnerScore = document.getElementById('winner-score');
+    const closeWinner = document.getElementById('close-winner');
+    // const endQuizBtn = document.getElementById('end-quiz-btn');
     
+    // Function to show winner
+    function showWinner() {
+      // Get current scores
+      const scoreA = parseInt(teamAScoreElement.textContent) || 0;
+      const scoreB = parseInt(teamBScoreElement.textContent) || 0;
+      console.log('Current Scores:', scoreA, scoreB); // Debugging inf
+      
+      
+      let winningTeam, winningScore;
+      
+      if (scoreA > scoreB) {
+        winningTeam = 'Team A';
+        winningScore = scoreA;
+      } else if (scoreB > scoreA) {
+        winningTeam = 'Team B';
+        winningScore = scoreB;
+      } else {
+        winningTeam = 'It\'s a Tie!';
+        winningScore = scoreA; // Both scores are the same
+      }
+      
+      // Update the winner modal
+      winnerTeam.textContent = winningTeam;
+      winnerScore.textContent = 'Score: ' + winningScore;
+      
+      // Show fireworks and winner modal
+      pyro.style.display = 'block';
+      winnerModal.style.display = 'flex';
+    }
+    
+    // End Quiz button click handler
+    // if (endQuizBtn) {
+    //   endQuizBtn.addEventListener('click', showWinner);
+    // }
+    
+    // // Close winner modal and reset
+    if (closeWinner) {
+       closeWinner.addEventListener('click', function() {
+         winnerModal.style.display = 'none';
+         pyro.style.display = 'none';
+       });
+    }
+    
+    // // Make the function globally available for testing
+    // window.showWinner = showWinner; 
     // New elements for question selection
     const quizSetupElement = document.createElement("div");
     quizSetupElement.id = "quiz-setup";
@@ -533,7 +586,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const winner = teamAScore > teamBScore ? 'Team A' :
                       teamBScore > teamAScore ? 'Team B' :
                       'It\'s a tie';
-
+      
         questionElement.innerHTML = `
           <div class="text-center">
             <h2 class="mb-8 text-4xl font-bold animate-bounce">Game Over!</h2>
@@ -559,6 +612,7 @@ document.addEventListener('DOMContentLoaded', function() {
         nextButton.innerHTML = '<i class="mr-2 ri-restart-line"></i>Play Again';
         nextButton.classList.remove('hidden');
         nextButton.classList.add('animate-pulse', 'glow');
+        showWinner();
     }
 
     function handleNextButton() {

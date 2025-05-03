@@ -9,27 +9,221 @@
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
   <!-- Add Remix icons -->
   <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
+  <!-- Add Fireworks CSS -->
+  <style>
+    .pyro {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 10;
+      pointer-events: none;
+      display: none;
+    }
+    .pyro > .before, .pyro > .after {
+      position: absolute;
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      box-shadow: 0 0 #fff;
+      animation: 1s bang ease-out infinite backwards, 1s gravity ease-in infinite backwards, 5s position linear infinite backwards;
+    }
+    .pyro > .after {
+      animation-delay: 1.25s, 1.25s, 1.25s;
+      animation-duration: 1.25s, 1.25s, 6.25s;
+    }
+    @keyframes bang {
+      to {
+        box-shadow: -70px -33px #00ff84, 46px -87px #0026ff, 13px -54px #ff00c8, -58px -128px #91ff00, 126px 35px #ff0400, 112px -84px #00ff33, -70px -104px #ff0400, 101px -17px #00ff73, 30px 34px #ff0400, 127px -74px #ff0062, 55px -97px #ff0400, -120px -42px #ff0400, -44px -104px #ff0400, 115px -114px #ff0400, 87px 1px #ff0400, -65px -104px #ff0400, 126px -97px #ff0400, 30px -84px #ff0400, 55px -97px #ff0400, -120px -42px #ff0400, -44px -104px #ff0400, 115px -114px #ff0400, 87px 1px #ff0400, -65px -104px #ff0400, 126px -97px #ff0400, 30px -84px #ff0400;
+      }
+    }
+    @keyframes gravity {
+      to {
+        transform: translateY(200px);
+        opacity: 0;
+      }
+    }
+    @keyframes position {
+      0%, 19.9% {
+        margin-top: 10%;
+        margin-left: 40%;
+      }
+      20%, 39.9% {
+        margin-top: 40%;
+        margin-left: 30%;
+      }
+      40%, 59.9% {
+        margin-top: 20%;
+        margin-left: 70%;
+      }
+      60%, 79.9% {
+        margin-top: 30%;
+        margin-left: 20%;
+      }
+      80%, 99.9% {
+        margin-top: 30%;
+        margin-left: 80%;
+      }
+    }
+    
+    /* Winner announcement modal */
+    .winner-modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.7);
+      z-index: 100;
+      justify-content: center;
+      align-items: center;
+    }
+    
+    .winner-content {
+      background: white;
+      padding: 2rem;
+      border-radius: 1rem;
+      text-align: center;
+      max-width: 500px;
+      width: 90%;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+      position: relative;
+      animation: confetti-rain 1s ease-out forwards;
+      border: 3px solid gold;
+    }
+    
+    .winner-title {
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+      background: linear-gradient(45deg, #FFD700, #FFA500);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      font-weight: bold;
+    }
+    
+    .winner-team {
+      font-size: 3rem;
+      font-weight: bold;
+      margin: 1rem 0;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+    }
+    
+    .winner-score {
+      font-size: 2rem;
+      margin-bottom: 1.5rem;
+    }
+    
+    .close-winner {
+      background: linear-gradient(45deg, #4b6cb7, #182848);
+      color: white;
+      border: none;
+      padding: 0.75rem 2rem;
+      border-radius: 0.5rem;
+      font-size: 1.2rem;
+      cursor: pointer;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    
+    .close-winner:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    }
+    
+    @keyframes confetti-rain {
+      0% {
+        transform: translateY(-50px);
+        opacity: 0;
+      }
+      100% {
+        transform: translateY(0);
+        opacity: 1;
+      }
+    }
+    
+    .trophy-icon {
+      font-size: 4rem;
+      color: gold;
+      margin-bottom: 1rem;
+      display: block;
+    }
+    
+    /* End Quiz Button */
+    .end-quiz-btn {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: linear-gradient(45deg, #FF416C, #FF4B2B);
+      color: white;
+      border: none;
+      padding: 12px 24px;
+      border-radius: 50px;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+      box-shadow: 0 4px 15px rgba(255, 75, 43, 0.4);
+      transition: all 0.3s ease;
+      z-index: 50;
+    }
+    
+    .end-quiz-btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 7px 20px rgba(255, 75, 43, 0.5);
+    }
+    
+    .end-quiz-btn i {
+      margin-right: 8px;
+    }
+  </style>
 </head>
-<body class="min-h-screen transition-colors duration-300" data-theme="default">
+<body class="min-h-screen transition-colors duration-300 bg-slate-100" data-theme="default">
+  <!-- Fireworks container -->
+  <div class="pyro">
+    <div class="before"></div>
+    <div class="after"></div>
+  </div>
+  
+  <!-- Winner announcement modal -->
+  <div id="winner-modal" class="winner-modal">
+    <div class="winner-content">
+      <i class="ri-trophy-fill trophy-icon"></i>
+      <h2 class="winner-title">Congratulations!</h2>
+      <p>The winner is:</p>
+      <div id="winner-team" class="winner-team">Team A</div>
+      <div id="winner-score" class="winner-score">Score: 0</div>
+      <button id="close-winner" class="close-winner">Play Again</button>
+    </div>
+  </div>
+
+  <!-- End Quiz Button -->
+  <button id="end-quiz-btn" class="end-quiz-btn">
+    <i class="ri-flag-2-fill"></i>End Quiz & Show Winner
+  </button>
+
   <!-- Theme Selector - Now top left -->
   <div class="fixed top-4 left-4 z-50">
     <div class="relative">
-     
-      <div id="theme-menu" class="hidden absolute left-0 mt-2 w-56 rounded-xl border shadow-xl border-white/10">
+      <button id="theme-toggle-btn" class="flex items-center px-4 py-2 bg-white rounded-lg border shadow-md text-slate-700 border-slate-200 hover:bg-slate-50">
+        <i class="mr-2 ri-palette-line"></i>
+        Theme
+      </button>
+      <div id="theme-menu" class="hidden absolute left-0 mt-2 w-56 bg-white rounded-xl border shadow-xl border-slate-200">
         <div class="p-3 space-y-2">
-          <button class="px-4 py-3 w-full text-left rounded-lg transition-colors theme-option" data-theme="default">
+          <button class="px-4 py-3 w-full text-left rounded-lg transition-colors theme-option hover:bg-slate-100" data-theme="default">
             <i class="mr-2 ri-contrast-2-line"></i>Default
           </button>
-          <button class="px-4 py-3 w-full text-left rounded-lg transition-colors theme-option" data-theme="ocean">
+          <button class="px-4 py-3 w-full text-left rounded-lg transition-colors theme-option hover:bg-slate-100" data-theme="ocean">
             <i class="mr-2 ri-water-flash-line"></i>Ocean
           </button>
-          <button class="px-4 py-3 w-full text-left rounded-lg transition-colors theme-option" data-theme="forest">
+          <button class="px-4 py-3 w-full text-left rounded-lg transition-colors theme-option hover:bg-slate-100" data-theme="forest">
             <i class="mr-2 ri-plant-line"></i>Forest
           </button>
-          <button class="px-4 py-3 w-full text-left rounded-lg transition-colors theme-option" data-theme="sunset">
+          <button class="px-4 py-3 w-full text-left rounded-lg transition-colors theme-option hover:bg-slate-100" data-theme="sunset">
             <i class="mr-2 ri-sun-line"></i>Sunset
           </button>
-          <button class="px-4 py-3 w-full text-left rounded-lg transition-colors theme-option" data-theme="purple">
+          <button class="px-4 py-3 w-full text-left rounded-lg transition-colors theme-option hover:bg-slate-100" data-theme="purple">
             <i class="mr-2 ri-moon-clear-line"></i>Purple Night
           </button>
         </div>
@@ -37,92 +231,92 @@
     </div>
   </div>
 
-  <!-- Background gradient overlay -->
-  <div class="fixed inset-0 opacity-20" style="background: radial-gradient(circle at 50% -20%, var(--primary), transparent)"></div>
+  <!-- Background gradient overlay - lighter and more subtle -->
+  <div class="fixed inset-0 opacity-10" style="background: radial-gradient(circle at 50% -20%, var(--primary), transparent)"></div>
 
   <!-- Center the main quiz content -->
   <div class="flex justify-center items-center p-4 min-h-screen">
-    <section class="relative p-8 w-full max-w-3xl rounded-3xl border shadow-2xl backdrop-blur-xl app bg-slate-800/30 border-white/10">
-      <!-- Decorative elements -->
+    <section class="relative p-8 w-full max-w-3xl rounded-3xl border shadow-xl backdrop-blur-sm app bg-white/90 border-slate-200">
+      <!-- Decorative elements - lighter and more subtle -->
       <div class="overflow-hidden absolute top-0 left-0 w-full h-full rounded-3xl">
-        <div class="absolute -top-1/2 -left-1/2 w-full h-full bg-gradient-to-br to-transparent rotate-45 from-blue-500/10"></div>
-        <div class="absolute -right-1/2 -bottom-1/2 w-full h-full bg-gradient-to-br to-transparent rotate-45 from-cyan-500/10"></div>
+        <div class="absolute -top-1/2 -left-1/2 w-full h-full bg-gradient-to-br to-transparent rotate-45 from-blue-300/10"></div>
+        <div class="absolute -right-1/2 -bottom-1/2 w-full h-full bg-gradient-to-br to-transparent rotate-45 from-cyan-300/10"></div>
       </div>
 
       <!-- Content -->
       <div class="relative">
         <div class="mb-5 text-center">
-          <h3 class="mb-2 text-xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-300">
+          <h3 class="mb-2 text-xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-cyan-500">
             College Of Computer Science and Information Technology
           </h3>
          
         </div>
 
-        <div class="flex justify-between p-6 mb-8 rounded-2xl border scores bg-slate-700/30 border-white/5">
+        <div class="flex justify-between p-6 mb-8 rounded-2xl border shadow-sm scores bg-slate-100 border-slate-200">
           <div class="team-score team-a">
             <div class="flex justify-between items-center mb-4">
-              <h3 class="flex items-center text-lg text-cyan-300">
+              <h3 class="flex items-center text-lg text-cyan-600">
                 <i class="mr-2 ri-team-fill"></i>Team A
               </h3>
-              <button id="team-a-theme-btn" class="flex items-center px-3 py-1 text-sm rounded-lg theme-btn">
+              <button id="team-a-theme-btn" class="flex items-center px-3 py-1 text-sm bg-white rounded-lg border shadow-sm theme-btn border-slate-200">
                 <i class="mr-2 ri-palette-line"></i>
                 Theme: <span class="ml-1 team-a-theme-indicator">default</span>
               </button>
             </div>
-            <div id="team-a-theme-menu" class="hidden absolute mt-2 w-48 rounded-xl border shadow-xl theme-menu border-white/10" data-team="teamA">
+            <div id="team-a-theme-menu" class="hidden absolute mt-2 w-48 bg-white rounded-xl border shadow-xl theme-menu border-slate-200" data-team="teamA">
               <div class="p-2 space-y-1">
-                <button class="px-3 py-2 w-full text-left rounded-lg transition-colors theme-option" data-theme="default">
+                <button class="px-3 py-2 w-full text-left rounded-lg transition-colors theme-option hover:bg-slate-100" data-theme="default">
                   <i class="mr-2 ri-contrast-2-line"></i>Default
                 </button>
-                <button class="px-3 py-2 w-full text-left rounded-lg transition-colors theme-option" data-theme="ocean">
+                <button class="px-3 py-2 w-full text-left rounded-lg transition-colors theme-option hover:bg-slate-100" data-theme="ocean">
                   <i class="mr-2 ri-water-flash-line"></i>Ocean
                 </button>
-                <button class="px-3 py-2 w-full text-left rounded-lg transition-colors theme-option" data-theme="forest">
+                <button class="px-3 py-2 w-full text-left rounded-lg transition-colors theme-option hover:bg-slate-100" data-theme="forest">
                   <i class="mr-2 ri-plant-line"></i>Forest
                 </button>
-                <button class="px-3 py-2 w-full text-left rounded-lg transition-colors theme-option" data-theme="sunset">
+                <button class="px-3 py-2 w-full text-left rounded-lg transition-colors theme-option hover:bg-slate-100" data-theme="sunset">
                   <i class="mr-2 ri-sun-line"></i>Sunset
                 </button>
-                <button class="px-3 py-2 w-full text-left rounded-lg transition-colors theme-option" data-theme="purple">
+                <button class="px-3 py-2 w-full text-left rounded-lg transition-colors theme-option hover:bg-slate-100" data-theme="purple">
                   <i class="mr-2 ri-moon-clear-line"></i>Purple Night
                 </button>
               </div>
             </div>
-            <span id="team-a-score" class="text-4xl font-bold text-white">0</span>
+            <span id="team-a-score" class="text-4xl font-bold text-slate-800">0</span>
           </div>
-          <div class="self-center px-6 py-3 rounded-full border vs-badge bg-slate-600/50 border-white/10">
-            <span class="font-semibold text-white/60">VS</span>
+          <div class="self-center px-6 py-3 text-blue-600 bg-blue-50 rounded-full border border-blue-100 vs-badge">
+            <span class="font-semibold">VS</span>
           </div>
           <div class="text-right team-score team-b">
             <div class="flex justify-between items-center mb-4">
-              <button id="team-b-theme-btn" class="flex items-center px-3 py-1 text-sm rounded-lg theme-btn">
+              <button id="team-b-theme-btn" class="flex items-center px-3 py-1 text-sm bg-white rounded-lg border shadow-sm theme-btn border-slate-200">
                 <i class="mr-2 ri-palette-line"></i>
                 Theme: <span class="ml-1 team-b-theme-indicator">default</span>
               </button>
-              <h3 class="flex items-center text-lg text-blue-300">
+              <h3 class="flex items-center text-lg text-blue-600">
                 Team B<i class="ml-2 ri-team-fill"></i>
               </h3>
             </div>
-            <div id="team-b-theme-menu" class="hidden absolute mt-2 w-48 rounded-xl border shadow-xl theme-menu border-white/10" data-team="teamB">
+            <div id="team-b-theme-menu" class="hidden absolute mt-2 w-48 bg-white rounded-xl border shadow-xl theme-menu border-slate-200" data-team="teamB">
               <div class="p-2 space-y-1">
-                <button class="px-3 py-2 w-full text-left rounded-lg transition-colors theme-option" data-theme="default">
+                <button class="px-3 py-2 w-full text-left rounded-lg transition-colors theme-option hover:bg-slate-100" data-theme="default">
                   <i class="mr-2 ri-contrast-2-line"></i>Default
                 </button>
-                <button class="px-3 py-2 w-full text-left rounded-lg transition-colors theme-option" data-theme="ocean">
+                <button class="px-3 py-2 w-full text-left rounded-lg transition-colors theme-option hover:bg-slate-100" data-theme="ocean">
                   <i class="mr-2 ri-water-flash-line"></i>Ocean
                 </button>
-                <button class="px-3 py-2 w-full text-left rounded-lg transition-colors theme-option" data-theme="forest">
+                <button class="px-3 py-2 w-full text-left rounded-lg transition-colors theme-option hover:bg-slate-100" data-theme="forest">
                   <i class="mr-2 ri-plant-line"></i>Forest
                 </button>
-                <button class="px-3 py-2 w-full text-left rounded-lg transition-colors theme-option" data-theme="sunset">
+                <button class="px-3 py-2 w-full text-left rounded-lg transition-colors theme-option hover:bg-slate-100" data-theme="sunset">
                   <i class="mr-2 ri-sun-line"></i>Sunset
                 </button>
-                <button class="px-3 py-2 w-full text-left rounded-lg transition-colors theme-option" data-theme="purple">
+                <button class="px-3 py-2 w-full text-left rounded-lg transition-colors theme-option hover:bg-slate-100" data-theme="purple">
                   <i class="mr-2 ri-moon-clear-line"></i>Purple Night
                 </button>
               </div>
             </div>
-            <span id="team-b-score" class="text-4xl font-bold text-white">0</span>
+            <span id="team-b-score" class="text-4xl font-bold text-slate-800">0</span>
           </div>
         </div>
 
@@ -142,7 +336,7 @@
         </div> -->
 
         <div class="space-y-6 quiz-container">
-          <h3 id="question" class="p-6 mb-8 text-2xl text-white rounded-2xl border bg-slate-700/30 question-text border-white/5"></h3>
+          <h3 id="question" class="p-6 mb-8 text-2xl rounded-2xl border shadow-sm text-slate-800 bg-white/80 question-text border-slate-200"></h3>
           <div id="answer-buttons" class="grid grid-cols-1 gap-4 md:grid-cols-2"></div>
           <button id="next-btn" class="hidden py-4 mt-8 w-full font-semibold text-white bg-gradient-to-r from-blue-500 to-cyan-500 rounded-xl transition-all duration-300 transform hover:scale-105 hover:shadow-lg hover:shadow-blue-500/25"></button>
         </div>
@@ -150,5 +344,8 @@
     </section>
   </div>
   <script src="script/script.js"></script>
+  
+  <!-- Add Fireworks and Winner Display Script -->
+
 </body>
 </html>
