@@ -137,8 +137,7 @@ function animateScore(element, newScore) {
 // Function to fetch questions from JSON file
 async function fetchQuestions() {
     try {
-        // The path should be relative to your HTML file, not the absolute server path
-        const response = await fetch('/build/data/questions.json');
+        const response = await fetch(`${import.meta.env.BASE_URL}data/questions.json`);
         if (!response.ok) {
             throw new Error('Failed to load questions');
         }
@@ -207,14 +206,18 @@ document.addEventListener('DOMContentLoaded', function() {
      const winnerTeam = document.getElementById('winner-team');
     const winnerScore = document.getElementById('winner-score');
     const closeWinner = document.getElementById('close-winner');
-    // const endQuizBtn = document.getElementById('end-quiz-btn');
+    const endQuizBtn = document.getElementById('end-quiz-btn');
+    
+    function setEndQuizVisible(visible) {
+      if (!endQuizBtn) return;
+      endQuizBtn.classList.toggle('hidden', !visible);
+    }
     
     // Function to show winner
     function showWinner() {
       // Get current scores
       const scoreA = parseInt(teamAScoreElement.textContent) || 0;
       const scoreB = parseInt(teamBScoreElement.textContent) || 0;
-      console.log('Current Scores:', scoreA, scoreB); // Debugging inf
       
       
       let winningTeam, winningScore;
@@ -240,15 +243,14 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     
     // End Quiz button click handler
-    // if (endQuizBtn) {
-    //   endQuizBtn.addEventListener('click', showWinner);
-    // }
+    endQuizBtn?.addEventListener('click', showWinner);
     
     // // Close winner modal and reset
     if (closeWinner) {
        closeWinner.addEventListener('click', function() {
          winnerModal.style.display = 'none';
          pyro.style.display = 'none';
+         showQuizSetup();
        });
     }
     
@@ -257,7 +259,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // New elements for question selection
     const quizSetupElement = document.createElement("div");
     quizSetupElement.id = "quiz-setup";
-    quizSetupElement.className = "p-6 mb-8 rounded-xl border bg-slate-800/50 border-white/10";
+    quizSetupElement.className = "p-6 mb-8 rounded-2xl border shadow-sm backdrop-blur-sm bg-white/80 border-slate-200";
     
     let questionBank = []; // Will hold all available questions
     let questionCount = 5; // Default number of questions to use in the quiz
@@ -298,41 +300,42 @@ document.addEventListener('DOMContentLoaded', function() {
     function showQuizSetup() {
         // Clear current content
         resetState();
+        setEndQuizVisible(false);
         
         // Get available categories
         const categories = getCategories(questionBank);
         
         // Create category menu items HTML
         const categoryMenuItems = categories.map(category => 
-            `<button data-category="${category}" class="flex items-center px-3 py-2 w-full text-left rounded-lg transition-colors hover:bg-slate-700">
+            `<button data-category="${category}" class="flex items-center px-3 py-2 w-full text-left rounded-lg transition-colors hover:bg-slate-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-slate-300">
                 <i class="mr-2 ri-bookmark-line"></i>${category}
             </button>`
         ).join('');
         
         // Create quiz setup UI with styled category selector
         quizSetupElement.innerHTML = `
-            <h2 class="mb-6 text-2xl font-bold text-center">Quiz Setup</h2>
+            <h2 class="mb-6 text-2xl font-bold tracking-tight text-center text-slate-900">Quiz Setup</h2>
             
             <div class="mb-6">
-                <label class="block mb-2 text-white/80">Category:</label>
+                <label class="block mb-2 text-sm font-medium text-slate-700">Category</label>
                 <div class="relative">
-                    <button id="category-selector" class="flex items-center px-4 py-2 w-full rounded-lg border transition-colors bg-slate-700/50 border-white/10 hover:bg-slate-600/50">
+                    <button id="category-selector" class="flex items-center px-4 py-3 w-full rounded-xl border shadow-sm transition-colors bg-white/90 border-slate-200 hover:bg-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-slate-300">
                         <i class="mr-2 ri-book-line"></i>
                         <span id="current-category">${selectedCategory}</span>
                         <i class="ml-auto ri-arrow-down-s-line"></i>
                     </button>
-                    <div id="category-menu" class="hidden absolute left-0 z-10 mt-2 w-full rounded-xl border shadow-xl bg-slate-800 border-white/10">
+                    <div id="category-menu" class="hidden absolute left-0 z-10 mt-2 w-full rounded-xl border shadow-xl backdrop-blur-xl bg-white/95 border-slate-200">
                         <div class="p-2 space-y-1">
                             ${categoryMenuItems}
                         </div>
                     </div>
                 </div>
-                <p class="mt-1 text-sm text-white/60">
-                    <span id="available-questions">${filterQuestionsByCategory(questionBank, selectedCategory).length}</span> questions available in this category
+                <p class="mt-2 text-sm text-slate-500">
+                    <span id="available-questions" class="font-semibold text-slate-700">${filterQuestionsByCategory(questionBank, selectedCategory).length}</span> questions available in this category
                 </p>
             </div>
             
-            <button id="start-quiz-btn" class="py-3 w-full bg-gradient-to-r from-blue-500 to-cyan-400 rounded-lg transition-all hover:from-blue-600 hover:to-cyan-500">
+            <button id="start-quiz-btn" class="py-3.5 w-full font-semibold text-white bg-gradient-to-r from-blue-600 to-cyan-500 rounded-xl transition-all hover:from-blue-700 hover:to-cyan-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-slate-300">
                 <i class="mr-2 ri-play-fill"></i>Start Quiz
             </button>
         `;
@@ -392,9 +395,11 @@ document.addEventListener('DOMContentLoaded', function() {
             teamAAnswered = false;
             teamBAnswered = false;
             bothTeamsAnswered = false;
-            nextButton.style.display = "none";
+            nextButton.classList.add('hidden');
+            nextButton.style.display = '';
             teamAScoreElement.textContent = "0";
             teamBScoreElement.textContent = "0";
+            setEndQuizVisible(true);
             
             // Remove quiz setup if it exists
             if (quizSetupElement.parentNode) {
@@ -421,6 +426,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     function showQuestion() {
         resetState();
+        setEndQuizVisible(true);
         
         // Check if questions array and current question exist
         if (!questions || !questions.length || currentQuestionIndex >= questions.length) {
@@ -447,26 +453,26 @@ document.addEventListener('DOMContentLoaded', function() {
         setTimeout(() => {
           if (!teamAAnswered) {
             questionElement.innerHTML = `
-              <div class="mb-8">
-                <span class="text-lg text-white/60">Question ${questionNo}</span>
-                <span class="ml-2 team-turn-badge-a">
-                  <i class="mr-1 ri-team-fill"></i>Team A's turn
+              <div class="flex flex-wrap gap-3 justify-between items-center mb-6">
+                <span class="text-sm font-medium text-slate-500">Question ${questionNo}</span>
+                <span class="team-turn-badge-a">
+                  <i class="ri-team-fill"></i><span>Team A's turn</span>
                 </span>
               </div>
-              <div class="text-xl md:text-2xl">${currentQuestion.question}</div>
+              <div class="text-xl font-semibold leading-snug text-slate-900 md:text-2xl">${currentQuestion.question}</div>
             `;
             currentTeam = 'A';
             // Apply Team A's theme
             applyTheme(teamATheme);
           } else if (!teamBAnswered) {
             questionElement.innerHTML = `
-              <div class="mb-8">
-                <span class="text-lg text-white/60">Question ${questionNo}</span>
-                <span class="ml-2 team-turn-badge-b">
-                  <i class="mr-1 ri-team-fill"></i>Team B's turn
+              <div class="flex flex-wrap gap-3 justify-between items-center mb-6">
+                <span class="text-sm font-medium text-slate-500">Question ${questionNo}</span>
+                <span class="team-turn-badge-b">
+                  <i class="ri-team-fill"></i><span>Team B's turn</span>
                 </span>
               </div>
-              <div class="text-xl md:text-2xl">${currentQuestion.question}</div>
+              <div class="text-xl font-semibold leading-snug text-slate-900 md:text-2xl">${currentQuestion.question}</div>
             `;
             currentTeam = 'B';
             // Apply Team B's theme
@@ -483,9 +489,9 @@ document.addEventListener('DOMContentLoaded', function() {
         currentQuestion.answers.forEach((answer, index) => {
           const button = document.createElement("button");
           button.innerHTML = `
-            <div class="flex items-center">
-              <span class="mr-3 text-white/60">${String.fromCharCode(65 + index)}.</span>
-              <span class="flex-grow text-xl text-left text-blue-300">${answer.text}</span>
+            <div class="flex gap-3 items-start">
+              <span class="flex justify-center items-center mt-0.5 w-8 h-8 text-sm font-semibold bg-white rounded-lg border border-slate-200">${String.fromCharCode(65 + index)}</span>
+              <span class="flex-1 text-base font-medium text-slate-800 md:text-lg">${answer.text}</span>
             </div>
           `;
           button.classList.add("btn");
@@ -508,7 +514,9 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function resetState() {
-        nextButton.style.display = "none";
+        nextButton.classList.add('hidden');
+        nextButton.classList.remove('animate-pulse', 'shadow-glow');
+        nextButton.style.display = '';
         while(answerButtons.firstChild) {
             answerButtons.removeChild(answerButtons.firstChild);
         }
@@ -583,27 +591,28 @@ document.addEventListener('DOMContentLoaded', function() {
 
     function showScore() {
         resetState();
+        setEndQuizVisible(false);
         const winner = teamAScore > teamBScore ? 'Team A' :
                       teamBScore > teamAScore ? 'Team B' :
                       'It\'s a tie';
       
         questionElement.innerHTML = `
           <div class="text-center">
-            <h2 class="mb-8 text-4xl font-bold animate-bounce">Game Over!</h2>
+            <h2 class="mb-8 text-4xl font-extrabold tracking-tight animate-bounce text-slate-900">Game Over!</h2>
             <div class="grid grid-cols-2 gap-8 mb-8">
-              <div class="p-8 rounded-2xl border transition-transform transform bg-slate-700/30 border-white/10 hover:scale-105">
-                <h3 class="mb-2 text-xl text-cyan-300">Team A</h3>
-                <span class="text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-300">${teamAScore}</span>
+              <div class="p-8 rounded-2xl border shadow-sm transition-transform transform bg-white/80 border-slate-200 hover:scale-105">
+                <h3 class="mb-2 text-xl font-semibold text-slate-900">Team A</h3>
+                <span class="text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-cyan-500">${teamAScore}</span>
               </div>
-              <div class="p-8 rounded-2xl border transition-transform transform bg-slate-700/30 border-white/10 hover:scale-105">
-                <h3 class="mb-2 text-xl text-blue-300">Team B</h3>
-                <span class="text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-300">${teamBScore}</span>
+              <div class="p-8 rounded-2xl border shadow-sm transition-transform transform bg-white/80 border-slate-200 hover:scale-105">
+                <h3 class="mb-2 text-xl font-semibold text-slate-900">Team B</h3>
+                <span class="text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-cyan-500">${teamBScore}</span>
               </div>
             </div>
-            <div class="mb-8 text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-300">
+            <div class="mb-6 text-3xl font-extrabold tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-cyan-500 md:text-4xl">
               ${winner === 'It\'s a tie' ? 'It\'s a tie!' : `${winner} wins!`}
             </div>
-            <div class="text-lg text-white/60">
+            <div class="text-base text-slate-600 md:text-lg">
               ${getWinnerMessage(winner, teamAScore, teamBScore)}
             </div>
           </div>
@@ -611,7 +620,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
         nextButton.innerHTML = '<i class="mr-2 ri-restart-line"></i>Play Again';
         nextButton.classList.remove('hidden');
-        nextButton.classList.add('animate-pulse', 'glow');
+        nextButton.classList.add('animate-pulse', 'shadow-glow');
         showWinner();
     }
 
@@ -691,10 +700,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // Add event listener for next button
-    nextButton.addEventListener("click", () => {
-        startQuiz();
-    });
+    nextButton.addEventListener("click", showQuizSetup);
 
     // Initialize everything
     initializeTeamThemeSelectors();
@@ -721,35 +727,11 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         }
     });
-    
-    // Update next button to show quiz setup instead of directly restarting
-    nextButton.addEventListener("click", () => {
-        showQuizSetup();
-    });
+    setEndQuizVisible(false);
 });
 
 // Make applyTheme available globally if needed
 window.applyTheme = applyTheme;
-
-// Add these CSS styles to your style.css file
-const styleSheet = document.createElement('style');
-styleSheet.textContent = `
-    .score-animation {
-        transform: scale(1.3);
-        transition: all 0.3s ease-in-out;
-    }
-
-    @keyframes scoreHighlight {
-        0% { transform: scale(1); }
-        50% { transform: scale(1.3); }
-        100% { transform: scale(1); }
-    }
-
-    .score-highlight {
-        animation: scoreHighlight 0.5s ease-in-out;
-    }
-`;
-document.head.appendChild(styleSheet);
 
 function getWinnerMessage(winner, teamAScore, teamBScore) {
     const scoreDifference = Math.abs(teamAScore - teamBScore);

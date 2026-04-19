@@ -1,0 +1,202 @@
+[
+  {
+    "question": "Which layer of the OSI model is responsible for end-to-end communication and error recovery?",
+    "answers": [
+      { "text": "Data Link Layer", "correct": false },
+      { "text": "Transport Layer", "correct": true },
+      { "text": "Network Layer", "correct": false },
+      { "text": "Application Layer", "correct": false }
+    ],
+    "category": "First"
+  },
+  {
+    "question": "What does HTTP stand for?",
+    "answers": [
+      { "text": "HyperText Transfer Protocol", "correct": true },
+      { "text": "High Transfer Text Process", "correct": false },
+      { "text": "Hyperlink Transmission Program", "correct": false },
+      { "text": "Host Transfer Template Protocol", "correct": false }
+    ],
+    "category": "Web"
+  },
+  {
+    "question": "Which data structure follows FIFO (First In, First Out)?",
+    "answers": [
+      { "text": "Stack", "correct": false },
+      { "text": "Queue", "correct": true },
+      { "text": "Tree", "correct": false },
+      { "text": "Graph", "correct": false }
+    ],
+    "category": "CS"
+  },
+  {
+    "question": "Which data structure follows LIFO (Last In, First Out)?",
+    "answers": [
+      { "text": "Queue", "correct": false },
+      { "text": "Stack", "correct": true },
+      { "text": "Heap", "correct": false },
+      { "text": "Linked List", "correct": false }
+    ],
+    "category": "CS"
+  },
+  {
+    "question": "What is the time complexity of binary search on a sorted array?",
+    "answers": [
+      { "text": "O(n)", "correct": false },
+      { "text": "O(log n)", "correct": true },
+      { "text": "O(n log n)", "correct": false },
+      { "text": "O(1)", "correct": false }
+    ],
+    "category": "Algorithms"
+  },
+  {
+    "question": "Which protocol is commonly used to securely browse websites?",
+    "answers": [
+      { "text": "FTP", "correct": false },
+      { "text": "HTTP", "correct": false },
+      { "text": "HTTPS", "correct": true },
+      { "text": "SMTP", "correct": false }
+    ],
+    "category": "Web"
+  },
+  {
+    "question": "In JavaScript, which keyword declares a block-scoped variable?",
+    "answers": [
+      { "text": "var", "correct": false },
+      { "text": "let", "correct": true },
+      { "text": "define", "correct": false },
+      { "text": "set", "correct": false }
+    ],
+    "category": "JavaScript"
+  },
+  {
+    "question": "Which port does HTTPS use by default?",
+    "answers": [
+      { "text": "21", "correct": false },
+      { "text": "80", "correct": false },
+      { "text": "443", "correct": true },
+      { "text": "25", "correct": false }
+    ],
+    "category": "Networking"
+  },
+  {
+    "question": "Which device forwards packets based on IP addresses?",
+    "answers": [
+      { "text": "Switch", "correct": false },
+      { "text": "Router", "correct": true },
+      { "text": "Hub", "correct": false },
+      { "text": "Repeater", "correct": false }
+    ],
+    "category": "Networking"
+  },
+  {
+    "question": "Which layer of the OSI model is responsible for routing?",
+    "answers": [
+      { "text": "Network Layer", "correct": true },
+      { "text": "Transport Layer", "correct": false },
+      { "text": "Session Layer", "correct": false },
+      { "text": "Physical Layer", "correct": false }
+    ],
+    "category": "Networking"
+  },
+  {
+    "question": "What is the result of 12 × 8?",
+    "answers": [
+      { "text": "86", "correct": false },
+      { "text": "96", "correct": true },
+      { "text": "108", "correct": false },
+      { "text": "88", "correct": false }
+    ],
+    "category": "Math"
+  },
+  {
+    "question": "Which number is prime?",
+    "answers": [
+      { "text": "21", "correct": false },
+      { "text": "29", "correct": true },
+      { "text": "35", "correct": false },
+      { "text": "39", "correct": false }
+    ],
+    "category": "Math"
+  },
+  {
+    "question": "In SQL, which clause is used to filter rows?",
+    "answers": [
+      { "text": "ORDER BY", "correct": false },
+      { "text": "WHERE", "correct": true },
+      { "text": "GROUP BY", "correct": false },
+      { "text": "JOIN", "correct": false }
+    ],
+    "category": "Databases"
+  },
+  {
+    "question": "Which HTTP method is typically used to update an existing resource?",
+    "answers": [
+      { "text": "GET", "correct": false },
+      { "text": "POST", "correct": false },
+      { "text": "PUT", "correct": true },
+      { "text": "TRACE", "correct": false }
+    ],
+    "category": "Web"
+  },
+  {
+    "question": "Which of these is a CSS layout system for 2D layouts?",
+    "answers": [
+      { "text": "Flexbox", "correct": false },
+      { "text": "Grid", "correct": true },
+      { "text": "Float", "correct": false },
+      { "text": "Inline", "correct": false }
+    ],
+    "category": "CSS"
+  },
+  {
+    "question": "Which git command creates a new branch named feature-x?",
+    "answers": [
+      { "text": "git init feature-x", "correct": false },
+      { "text": "git branch feature-x", "correct": true },
+      { "text": "git push feature-x", "correct": false },
+      { "text": "git clone feature-x", "correct": false }
+    ],
+    "category": "Tools"
+  },
+  {
+    "question": "Which sorting algorithm is generally O(n log n) on average?",
+    "answers": [
+      { "text": "Bubble Sort", "correct": false },
+      { "text": "Quick Sort", "correct": true },
+      { "text": "Linear Search", "correct": false },
+      { "text": "Selection Sort", "correct": false }
+    ],
+    "category": "Algorithms"
+  },
+  {
+    "question": "What does RAM stand for?",
+    "answers": [
+      { "text": "Read Access Memory", "correct": false },
+      { "text": "Random Access Memory", "correct": true },
+      { "text": "Rapid Active Memory", "correct": false },
+      { "text": "Run Access Module", "correct": false }
+    ],
+    "category": "Hardware"
+  },
+  {
+    "question": "In programming, what does IDE stand for?",
+    "answers": [
+      { "text": "Integrated Development Environment", "correct": true },
+      { "text": "Internal Data Engine", "correct": false },
+      { "text": "Interface Design Editor", "correct": false },
+      { "text": "Internet Development Extension", "correct": false }
+    ],
+    "category": "Tools"
+  },
+  {
+    "question": "Which is a valid JSON value type?",
+    "answers": [
+      { "text": "Function", "correct": false },
+      { "text": "Undefined", "correct": false },
+      { "text": "Number", "correct": true },
+      { "text": "Symbol", "correct": false }
+    ],
+    "category": "Web"
+  }
+]

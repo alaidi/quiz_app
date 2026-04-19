@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Quiz | Join</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css"
+      rel="stylesheet"
+    />
+  </head>
+  <body class="min-h-screen transition-colors duration-300" data-theme="default">
+    <div class="fixed inset-0 opacity-10" style="background: radial-gradient(circle at 50% -20%, var(--primary), transparent)"></div>
+
+    <div class="flex justify-center items-center p-4 min-h-screen">
+      <section class="relative p-8 w-full max-w-xl rounded-3xl border shadow-xl backdrop-blur-sm bg-white/90 border-slate-200">
+        <div class="overflow-hidden absolute top-0 left-0 w-full h-full rounded-3xl pointer-events-none z-0">
+          <div class="absolute -top-1/2 -left-1/2 w-full h-full bg-gradient-to-br to-transparent rotate-45 from-blue-300/10"></div>
+          <div class="absolute -right-1/2 -bottom-1/2 w-full h-full bg-gradient-to-br to-transparent rotate-45 from-cyan-300/10"></div>
+        </div>
+
+        <div class="relative z-10">
+          <div class="mb-6 text-center">
+            <h1 class="text-3xl font-extrabold tracking-tight text-slate-900">Two-Team Quiz</h1>
+            <p class="mt-2 text-slate-600">Host on the center screen, teams join from their own devices.</p>
+          </div>
+
+          <div class="grid grid-cols-1 gap-4">
+            <a href="/host" class="py-3.5 w-full text-center font-semibold text-white bg-gradient-to-r from-blue-600 to-cyan-500 rounded-xl transition-all hover:from-blue-700 hover:to-cyan-600">
+              <i class="mr-2 ri-tv-2-line"></i>Open Host Screen
+            </a>
+
+            <div class="p-5 rounded-2xl border border-slate-200 bg-white/80">
+              <label class="block mb-2 text-sm font-medium text-slate-700">Room code</label>
+              <input id="room-code" maxlength="6" class="px-4 py-3 w-full rounded-xl border shadow-sm bg-white border-slate-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-slate-300" placeholder="ABCD" />
+
+              <div class="grid grid-cols-1 gap-3 mt-4 sm:grid-cols-2">
+                <button id="join-a" class="py-3 w-full font-semibold text-white bg-gradient-to-r from-emerald-600 to-green-500 rounded-xl hover:from-emerald-700 hover:to-green-600">
+                  Join Team A
+                </button>
+                <button id="join-b" class="py-3 w-full font-semibold text-white bg-gradient-to-r from-indigo-600 to-purple-500 rounded-xl hover:from-indigo-700 hover:to-purple-600">
+                  Join Team B
+                </button>
+              </div>
+              <p id="join-error" class="hidden mt-3 text-sm font-medium text-red-600"></p>
+            </div>
+
+            <a href="/solo.html" class="py-3 w-full text-center font-semibold rounded-xl border border-slate-200 bg-white hover:bg-slate-50">
+              Solo mode (single device)
+            </a>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <script type="module" src="/src/join.js"></script>
+  </body>
+</html>
+

@@ -1,6 +1,5 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@config "../tailwind.config.js";
+@import "tailwindcss";
 
 @layer base {
   :root {
@@ -10,10 +9,13 @@
     --background-start: #0f172a;
     --background-middle: #164e63;
     --background-end: #0f172a;
+    --surface: rgba(255, 255, 255, 0.92);
+    --surface-muted: rgba(255, 255, 255, 0.75);
+    --overlay: rgba(2, 6, 23, 0.72);
   }
 
   body {
-    @apply min-h-screen transition-colors duration-300;
+    @apply min-h-screen font-sans antialiased transition-colors duration-300;
     background: linear-gradient(
       to bottom right,
       var(--background-start),
@@ -24,12 +26,224 @@
 }
 
 @layer components {
-  .theme-option {
-    @apply transition-colors hover:bg-white/10;
+  #theme-menu {
+    @apply z-50 backdrop-blur-xl bg-white/90;
   }
 
-  #theme-menu {
-    @apply backdrop-blur-sm bg-slate-800/90;
+  .theme-menu {
+    @apply z-50 backdrop-blur-xl bg-white/90;
+  }
+
+  #team-a-theme-menu {
+    left: 0;
+    right: auto;
+  }
+
+  #team-b-theme-menu {
+    right: 0;
+    left: auto;
+  }
+
+  .theme-option {
+    @apply px-3 py-2 w-full text-left rounded-lg transition-colors text-slate-700 hover:bg-slate-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-slate-300;
+  }
+
+  .btn {
+    @apply overflow-hidden relative p-4 w-full text-left rounded-xl border shadow-sm transition-all duration-200 border-slate-200 bg-white/85 hover:-translate-y-0.5 hover:bg-white hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-slate-300;
+  }
+
+  .btn:disabled {
+    @apply opacity-60 cursor-not-allowed;
+  }
+
+  .team-a-selected {
+    border: 2px solid var(--primary) !important;
+    background-color: rgba(96, 165, 250, 0.12) !important;
+  }
+
+  .team-b-selected {
+    border: 2px solid var(--secondary) !important;
+    background-color: rgba(103, 232, 249, 0.12) !important;
+  }
+
+  .correct {
+    border: 2px solid #22c55e !important;
+    background-color: rgba(34, 197, 94, 0.12) !important;
+    animation: correctAnswer 0.5s ease-out;
+  }
+
+  .incorrect {
+    border: 2px solid #ef4444 !important;
+    background-color: rgba(239, 68, 68, 0.12) !important;
+    animation: incorrectAnswer 0.5s ease-out;
+  }
+
+  .team-turn-badge-a {
+    @apply inline-flex gap-2 items-center px-3 py-1 text-sm font-medium rounded-full border;
+    color: color-mix(in srgb, var(--primary) 85%, #0f172a);
+    background-color: color-mix(in srgb, var(--primary) 14%, transparent);
+    border-color: color-mix(in srgb, var(--primary) 25%, transparent);
+  }
+
+  .team-turn-badge-b {
+    @apply inline-flex gap-2 items-center px-3 py-1 text-sm font-medium rounded-full border;
+    color: color-mix(in srgb, var(--secondary) 70%, #0f172a);
+    background-color: color-mix(in srgb, var(--secondary) 14%, transparent);
+    border-color: color-mix(in srgb, var(--secondary) 25%, transparent);
+  }
+
+  .score-animation {
+    transform: scale(1.15);
+    transition: transform 0.3s ease-in-out;
+  }
+
+  .winner-modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: var(--overlay);
+    z-index: 100;
+    justify-content: center;
+    align-items: center;
+    padding: 1rem;
+  }
+
+  .winner-content {
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.96), rgba(255, 255, 255, 0.9));
+    padding: 2rem;
+    border-radius: 1.25rem;
+    text-align: center;
+    max-width: 520px;
+    width: 100%;
+    box-shadow: 0 20px 60px rgba(2, 6, 23, 0.35);
+    position: relative;
+    border: 1px solid rgba(148, 163, 184, 0.35);
+    backdrop-filter: blur(18px);
+    animation: bounceIn 0.6s ease-out both;
+  }
+
+  .winner-title {
+    font-size: 2.25rem;
+    margin-bottom: 0.75rem;
+    background: linear-gradient(90deg, color-mix(in srgb, var(--primary) 95%, white), color-mix(in srgb, var(--secondary) 95%, white));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+  }
+
+  .winner-team {
+    font-size: 2.5rem;
+    font-weight: 800;
+    margin: 0.75rem 0;
+    color: #0f172a;
+  }
+
+  .winner-score {
+    font-size: 1.25rem;
+    margin-bottom: 1.25rem;
+    color: #334155;
+  }
+
+  .close-winner {
+    background: linear-gradient(90deg, var(--primary), var(--secondary));
+    color: white;
+    border: none;
+    padding: 0.85rem 2rem;
+    border-radius: 0.85rem;
+    font-size: 1.05rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: transform 0.15s ease, box-shadow 0.15s ease, filter 0.15s ease;
+    box-shadow: 0 12px 30px rgba(59, 130, 246, 0.25);
+  }
+
+  .close-winner:hover {
+    transform: translateY(-2px);
+    filter: brightness(1.02);
+    box-shadow: 0 16px 40px rgba(59, 130, 246, 0.32);
+  }
+
+  .close-winner:active {
+    transform: translateY(-1px);
+  }
+
+  .close-winner:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.85), 0 0 0 6px rgba(59, 130, 246, 0.35), 0 16px 40px rgba(59, 130, 246, 0.32);
+  }
+
+  .trophy-icon {
+    font-size: 3.25rem;
+    color: color-mix(in srgb, var(--primary) 70%, #f59e0b);
+    margin-bottom: 0.75rem;
+    display: block;
+  }
+
+  .end-quiz-btn {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background: linear-gradient(90deg, var(--primary), var(--secondary));
+    color: white;
+    border: none;
+    padding: 12px 18px;
+    border-radius: 999px;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    box-shadow: 0 14px 34px rgba(2, 6, 23, 0.22);
+    transition: transform 0.15s ease, box-shadow 0.15s ease, filter 0.15s ease;
+    z-index: 50;
+  }
+
+  .end-quiz-btn:hover {
+    transform: translateY(-2px);
+    filter: brightness(1.02);
+    box-shadow: 0 18px 44px rgba(2, 6, 23, 0.26);
+  }
+
+  .end-quiz-btn:active {
+    transform: translateY(-1px);
+  }
+
+  .end-quiz-btn:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.85), 0 0 0 6px rgba(59, 130, 246, 0.35), 0 18px 44px rgba(2, 6, 23, 0.26);
+  }
+
+  .end-quiz-btn i {
+    margin-right: 8px;
+  }
+
+  .pyro {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 10;
+    pointer-events: none;
+    display: none;
+  }
+
+  .pyro > .before,
+  .pyro > .after {
+    position: absolute;
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    box-shadow: 0 0 #fff;
+    animation: 1s bang ease-out infinite backwards, 1s gravity ease-in infinite backwards, 5s position linear infinite backwards;
+  }
+
+  .pyro > .after {
+    animation-delay: 1.25s, 1.25s, 1.25s;
+    animation-duration: 1.25s, 1.25s, 6.25s;
   }
 }
 
@@ -63,27 +277,6 @@
   }
 }
 
-/* Glow effects */
-.glow {
-  position: relative;
-}
-
-.glow::after {
-  content: '';
-  position: absolute;
-  inset: -1px;
-  background: linear-gradient(45deg, #3b82f6, #06b6d4);
-  filter: blur(15px);
-  z-index: -1;
-  opacity: 0;
-  transition: opacity 0.3s ease;
-}
-
-.glow:hover::after {
-  opacity: 0.5;
-}
-
-/* Enhanced animations */
 @keyframes correctAnswer {
   0% { transform: scale(1); }
   40% { transform: scale(1.05); }
@@ -105,7 +298,6 @@
   100% { transform: scale(1); opacity: 1; }
 }
 
-/* Floating animation for decorative elements */
 @keyframes float {
   0% { transform: translateY(0px); }
   50% { transform: translateY(-20px); }
@@ -116,152 +308,49 @@
   animation: float 6s ease-in-out infinite;
 }
 
-/* Theme-specific styles */
-.theme-default {
-    --team-color: theme('colors.blue.500');
-    --text-color: theme('colors.white');
+@keyframes bang {
+  to {
+    box-shadow: -70px -33px #00ff84, 46px -87px #0026ff, 13px -54px #ff00c8, -58px -128px #91ff00, 126px 35px #ff0400, 112px -84px #00ff33, -70px -104px #ff0400, 101px -17px #00ff73, 30px 34px #ff0400, 127px -74px #ff0062, 55px -97px #ff0400, -120px -42px #ff0400, -44px -104px #ff0400, 115px -114px #ff0400, 87px 1px #ff0400, -65px -104px #ff0400, 126px -97px #ff0400, 30px -84px #ff0400, 55px -97px #ff0400, -120px -42px #ff0400, -44px -104px #ff0400, 115px -114px #ff0400, 87px 1px #ff0400, -65px -104px #ff0400, 126px -97px #ff0400, 30px -84px #ff0400;
+  }
 }
 
-.theme-ocean {
-    --team-color: theme('colors.cyan.400');
-    --text-color: theme('colors.white');
-}
-
-.theme-forest {
-    --team-color: theme('colors.green.400');
-    --text-color: theme('colors.white');
-}
-
-.theme-sunset {
-    --team-color: theme('colors.orange.400');
-    --text-color: theme('colors.white');
-}
-
-.theme-purple {
-    --team-color: theme('colors.purple.400');
-    --text-color: theme('colors.white');
-}
-
-.theme-neon {
-    --team-color: theme('colors.lime.400');
-    --text-color: theme('colors.white');
-}
-
-.theme-ruby {
-    --team-color: theme('colors.rose.500');
-    --text-color: theme('colors.white');
-}
-
-.theme-midnight {
-    --team-color: theme('colors.indigo.400');
-    --text-color: theme('colors.white');
-}
-
-/* Team specific elements */
-.team-a {
-    color: var(--team-color);
-}
-
-.team-b {
-    color: var(--team-color);
-}
-
-.theme-menu {
-    @apply absolute z-50 p-2 rounded-xl border shadow-lg bg-slate-800 border-white/10;
-    min-width: 200px;
-}
-
-.theme-option {
-    @apply px-3 py-2 w-full text-left text-white rounded-lg transition-colors hover:bg-slate-700;
-}
-
-/* Position fixes for theme menus */
-#team-a-theme-menu {
-    left: 0;
-    right: auto;
-}
-
-#team-b-theme-menu {
-    right: 0;
-    left: auto;
-}
-
-/* Team theme buttons */
-.team-theme-btn {
-    @apply flex items-center px-3 py-2 text-white rounded-lg transition-colors hover:bg-slate-700/50;
-}
-
-/* Team A's selection */
-.team-a-selected {
-    border: 2px solid var(--primary) !important;
-    background-color: rgba(96, 165, 250, 0.1) !important;
-}
-
-/* Team B's selection */
-.team-b-selected {
-    border: 2px solid var(--secondary) !important;
-    background-color: rgba(244, 114, 182, 0.1) !important;
-}
-
-/* Correct answer highlight */
-.correct {
-    border: 2px solid #4ade80 !important;
-    background-color: rgba(74, 222, 128, 0.1) !important;
-    animation: correctAnswer 0.5s ease-out;
-}
-
-/* Animation for correct answer */
-@keyframes correctAnswer {
-    0% { transform: scale(1); }
-    50% { transform: scale(1.05); }
-    100% { transform: scale(1); }
-}
-
-/* Basic button styling */
-.btn {
-    @apply overflow-hidden relative p-4 mb-4 w-full text-left rounded-xl border transition-all duration-300 bg-slate-800/50 border-white/10 hover:bg-slate-700/50;
-}
-
-/* Team turn badges */
-.team-turn-badge-a {
-    @apply inline-flex items-center px-3 py-1 text-sm text-blue-400 rounded-full bg-blue-500/20;
-}
-
-.team-turn-badge-b {
-    @apply inline-flex items-center px-3 py-1 text-sm text-cyan-400 rounded-full bg-cyan-500/20;
-}
-
-/* Glow effect */
-.glow {
-    box-shadow: 0 0 15px -3px rgba(59, 130, 246, 0.5);
-}
-
-/* Incorrect answer animation */
-.incorrect {
-    border: 2px solid #ef4444 !important;
-    background-color: rgba(239, 68, 68, 0.1) !important;
-    animation: incorrectAnswer 0.5s ease-out;
-}
-
-@keyframes incorrectAnswer {
-    0% { transform: translateX(0); }
-    20% { transform: translateX(-8px); }
-    40% { transform: translateX(8px); }
-    60% { transform: translateX(-4px); }
-    80% { transform: translateX(4px); }
-    100% { transform: translateX(0); }
-}
-
-/* Category dropdown styles */
-#category-menu {
-    z-index: 50;
-    backdrop-filter: blur(8px);
-    transform-origin: top;
-    transition: all 0.2s ease-out;
-}
-
-#category-menu.hidden {
+@keyframes gravity {
+  to {
+    transform: translateY(200px);
     opacity: 0;
-    transform: scale(0.95);
-    pointer-events: none;
+  }
+}
+
+@keyframes position {
+  0%, 19.9% {
+    margin-top: 10%;
+    margin-left: 40%;
+  }
+  20%, 39.9% {
+    margin-top: 40%;
+    margin-left: 30%;
+  }
+  40%, 59.9% {
+    margin-top: 20%;
+    margin-left: 70%;
+  }
+  60%, 79.9% {
+    margin-top: 30%;
+    margin-left: 20%;
+  }
+  80%, 99.9% {
+    margin-top: 30%;
+    margin-left: 80%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .floating,
+  .pyro > .before,
+  .pyro > .after,
+  .winner-content,
+  .correct,
+  .incorrect {
+    animation: none !important;
+  }
 }
