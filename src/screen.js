@@ -7,6 +7,7 @@ const scoreBEl = document.getElementById('score-b')
 const barEl = document.getElementById('bar')
 const progressEl = document.getElementById('progress')
 const questionEl = document.getElementById('question')
+const answersEl = document.getElementById('answers')
 const revealEl = document.getElementById('reveal')
 const pyro = document.getElementById('pyro')
 
@@ -73,6 +74,8 @@ socket.on('host:state', (state) => {
     barEl.style.width = '0%'
     progressEl.textContent = state.phase === 'lobby' ? 'Lobby' : 'Waiting…'
     questionEl.textContent = 'Waiting for host…'
+    answersEl.classList.add('hidden')
+    answersEl.innerHTML = ''
     revealEl.classList.add('hidden')
     revealEl.innerHTML = ''
     return
@@ -81,6 +84,24 @@ socket.on('host:state', (state) => {
   barEl.style.width = `${pct(state.index, state.total)}%`
   progressEl.textContent = `Question ${state.index + 1} of ${state.total}`
   questionEl.textContent = state.question.text
+
+  // Show answers if available
+  if (state.question.answers && state.question.answers.length > 0) {
+    answersEl.classList.remove('hidden')
+    answersEl.innerHTML = state.question.answers
+      .map(
+        (a, i) => `
+        <div class="p-4 rounded-xl border border-slate-200 bg-slate-50">
+          <span class="inline-flex justify-center items-center mr-3 w-8 h-8 text-sm font-extrabold rounded-lg bg-slate-200 text-slate-700">${String.fromCharCode(65 + i)}</span>
+          <span class="text-lg font-semibold text-slate-800">${a.text || ''}</span>
+        </div>
+      `
+      )
+      .join('')
+  } else {
+    answersEl.classList.add('hidden')
+    answersEl.innerHTML = ''
+  }
 
   if (state.phase === 'question') {
     revealEl.classList.add('hidden')
@@ -96,6 +117,9 @@ socket.on('host:reveal', (payload) => {
   const bCorrect = payload.teamB?.correct === true
 
   if (aCorrect || bCorrect) showPyro()
+
+  // Hide answers during reveal to avoid redundancy
+  answersEl.classList.add('hidden')
 
   revealEl.classList.remove('hidden')
   revealEl.innerHTML = `
