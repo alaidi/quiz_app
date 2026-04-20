@@ -210,7 +210,7 @@ async function start() {
       pathname === '/screen.html' ||
       pathname === '/screen'
     ) {
-      if (!isSoloAuthed(req)) return res.redirect(302, '/solo-login.html')
+      if (!isSoloAuthed(req)) return res.redirect(302, `/login.html?redirect=${encodeURIComponent(pathname)}`)
     }
     next()
   })

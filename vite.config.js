@@ -13,7 +13,7 @@ export default defineConfig({
         screen: resolve(__dirname, 'screen.html'),
         team: resolve(__dirname, 'team.html'),
         solo: resolve(__dirname, 'solo.html'),
-        soloLogin: resolve(__dirname, 'solo-login.html'),
+        soloLogin: resolve(__dirname, 'login.html'),
       },
     },
   },

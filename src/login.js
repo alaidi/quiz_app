@@ -6,6 +6,11 @@ const passwordEl = document.getElementById('password')
 const errorEl = document.getElementById('error')
 const submitEl = document.getElementById('submit')
 
+function getRedirectUrl() {
+  const params = new URLSearchParams(window.location.search)
+  return params.get('redirect') || '/solo.html'
+}
+
 function setError(message) {
   errorEl.textContent = message || ''
   errorEl.classList.toggle('hidden', !message)
@@ -13,7 +18,7 @@ function setError(message) {
 
 async function checkSession() {
   const res = await fetch('/api/solo/session')
-  if (res.ok) window.location.href = '/solo.html'
+  if (res.ok) window.location.href = getRedirectUrl()
 }
 
 form?.addEventListener('submit', async (e) => {
@@ -32,7 +37,7 @@ form?.addEventListener('submit', async (e) => {
       submitEl.disabled = false
       return
     }
-    window.location.href = '/solo.html'
+    window.location.href = getRedirectUrl()
   } catch {
     setError('Network error')
     submitEl.disabled = false
