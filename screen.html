@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Quiz | Screen</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css"
+      rel="stylesheet"
+    />
+  </head>
+  <body class="min-h-screen transition-colors duration-300" data-theme="default">
+    <div id="pyro" class="pyro">
+      <div class="before"></div>
+      <div class="after"></div>
+    </div>
+
+    <div class="fixed inset-0 opacity-10" style="background: radial-gradient(circle at 50% -20%, var(--primary), transparent)"></div>
+
+    <div class="flex justify-center items-center p-4 min-h-screen">
+      <section class="relative p-10 w-full max-w-5xl rounded-3xl border shadow-xl backdrop-blur-sm bg-white/90 border-slate-200">
+        <div class="overflow-hidden absolute top-0 left-0 w-full h-full rounded-3xl pointer-events-none z-0">
+          <div class="absolute -top-1/2 -left-1/2 w-full h-full bg-gradient-to-br to-transparent rotate-45 from-blue-300/10"></div>
+          <div class="absolute -right-1/2 -bottom-1/2 w-full h-full bg-gradient-to-br to-transparent rotate-45 from-cyan-300/10"></div>
+        </div>
+
+        <div class="relative z-10">
+          <div class="flex flex-wrap gap-3 justify-between items-center mb-6">
+            <div class="text-sm font-semibold text-slate-600">Room: <span id="room" class="font-extrabold text-slate-900">----</span></div>
+            <div class="flex items-center gap-6">
+              <div class="text-lg font-extrabold text-slate-900">A: <span id="score-a" class="inline-block">0</span></div>
+              <div class="text-lg font-extrabold text-slate-900">B: <span id="score-b" class="inline-block">0</span></div>
+            </div>
+          </div>
+
+          <div class="h-3 rounded-full bg-slate-200 overflow-hidden">
+            <div id="bar" class="h-full bg-gradient-to-r from-blue-600 to-cyan-500" style="width: 0%"></div>
+          </div>
+          <div class="mt-3 text-sm font-medium text-slate-500" id="progress">Waiting…</div>
+
+          <div class="mt-8">
+            <div id="question" class="text-4xl font-extrabold leading-tight tracking-tight text-slate-900 md:text-5xl">Waiting for host…</div>
+            <div id="reveal" class="hidden mt-6 p-6 rounded-2xl border border-slate-200 bg-white"></div>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <script type="module" src="/src/screen.js"></script>
+  </body>
+</html>
+

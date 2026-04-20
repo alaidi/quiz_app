@@ -48,6 +48,13 @@
             <div class="mt-6">
               <div id="question" class="text-xl font-semibold leading-snug text-slate-900">Waiting for host…</div>
               <div id="answers" class="grid grid-cols-1 gap-3 mt-5"></div>
+              <button
+                id="submit-answer"
+                class="py-3.5 mt-4 w-full font-semibold text-white bg-gradient-to-r from-blue-600 to-cyan-500 rounded-xl transition-all hover:from-blue-700 hover:to-cyan-600 disabled:opacity-60 disabled:cursor-not-allowed"
+                disabled
+              >
+                <i class="mr-2 ri-check-line"></i>Submit Answer
+              </button>
               <div id="submitted" class="hidden mt-4 text-sm font-semibold text-slate-700">Submitted. Waiting…</div>
               <div id="result" class="hidden mt-4 p-4 rounded-xl border border-slate-200 bg-white"></div>
             </div>
@@ -59,4 +66,3 @@
     <script type="module" src="/src/team.js"></script>
   </body>
 </html>
-

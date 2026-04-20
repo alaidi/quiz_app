@@ -10,6 +10,7 @@ const scoreEl = document.getElementById('score')
 const barEl = document.getElementById('bar')
 const questionEl = document.getElementById('question')
 const answersEl = document.getElementById('answers')
+const submitBtn = document.getElementById('submit-answer')
 const submittedEl = document.getElementById('submitted')
 const resultEl = document.getElementById('result')
 
@@ -53,6 +54,7 @@ function saveLog(log) {
 let log = loadLog()
 let lastQuestionIndex = null
 let locked = false
+let selectedIndex = null
 
 function renderAnswers(question, disabled) {
   answersEl.innerHTML = ''
@@ -70,15 +72,27 @@ function renderAnswers(question, disabled) {
       </div>
     `
     btn.addEventListener('click', () => {
-      if (locked) return
-      locked = true
-      socket.emit('team:answer', { code, team, deviceId, index: idx })
+      if (locked || disabled) return
+      setError('')
+      selectedIndex = idx
+      Array.from(answersEl.children).forEach((child, childIdx) => {
+        child.classList.toggle(team === 'A' ? 'team-a-selected' : 'team-b-selected', childIdx === idx)
+      })
+      if (submitBtn) submitBtn.disabled = false
     })
     answersEl.appendChild(btn)
   })
 }
 
 const socket = createSocket()
+
+submitBtn?.addEventListener('click', () => {
+  if (locked) return
+  if (selectedIndex === null) return
+  locked = true
+  submitBtn.disabled = true
+  socket.emit('team:answer', { code, team, deviceId, index: selectedIndex })
+})
 
 socket.on('connect', () => {
   statusEl.textContent = 'Connected. Joining room…'
@@ -106,10 +120,12 @@ socket.on('team:state', (state) => {
     barEl.style.width = '0%'
     questionEl.textContent = 'Waiting for host…'
     answersEl.innerHTML = ''
+    if (submitBtn) submitBtn.disabled = true
     submittedEl.classList.add('hidden')
     resultEl.classList.add('hidden')
     resultEl.innerHTML = ''
     locked = false
+    selectedIndex = null
     return
   }
 
@@ -122,14 +138,24 @@ socket.on('team:state', (state) => {
     resultEl.classList.add('hidden')
     resultEl.innerHTML = ''
     locked = false
+    selectedIndex = null
+    if (submitBtn) submitBtn.disabled = true
   }
 
   submittedEl.classList.toggle('hidden', !state.submitted)
-  renderAnswers(state.question, state.submitted || state.phase !== 'question')
+  const disableChoices = state.submitted || state.phase !== 'question'
+  renderAnswers(state.question, disableChoices)
+  if (submitBtn) submitBtn.disabled = disableChoices || selectedIndex === null
 })
 
 socket.on('team:answer:accepted', () => {
   submittedEl.classList.remove('hidden')
+})
+
+socket.on('team:answer:denied', ({ message }) => {
+  locked = false
+  setError(message || 'Answer rejected')
+  if (submitBtn) submitBtn.disabled = selectedIndex === null
 })
 
 socket.on('team:reveal', (payload) => {

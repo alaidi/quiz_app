@@ -1,0 +1,10 @@
+{
+  "bindHost": "0.0.0.0",
+  "port": 5173,
+  "publicBaseUrl": "http://192.168.100.29:5173",
+  "soloAuth": {
+    "enabled": true,
+    "username": "admin",
+    "password": "admin123"
+  }
+}

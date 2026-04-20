@@ -14,6 +14,11 @@
     />
   </head>
   <body class="min-h-screen transition-colors duration-300" data-theme="default">
+    <div id="pyro" class="pyro">
+      <div class="before"></div>
+      <div class="after"></div>
+    </div>
+
     <div class="fixed inset-0 opacity-10" style="background: radial-gradient(circle at 50% -20%, var(--primary), transparent)"></div>
 
     <div class="flex justify-center items-center p-4 min-h-screen">
@@ -42,6 +47,12 @@
                 <button id="copy-room" class="px-3 py-2 text-sm font-semibold rounded-xl border border-slate-200 bg-white hover:bg-slate-50">
                   Copy
                 </button>
+                <a id="open-screen" href="/screen.html" class="px-3 py-2 text-sm font-semibold rounded-xl border border-slate-200 bg-white hover:bg-slate-50">
+                  Screen
+                </a>
+              </div>
+              <div class="mt-2 text-sm text-slate-600">
+                LAN URL: <span id="lan-url" class="font-semibold text-slate-800">loading…</span>
               </div>
               <div id="room-links" class="mt-3 text-sm text-slate-600"></div>
               <p id="host-error" class="hidden mt-3 text-sm font-medium text-red-600"></p>
@@ -86,8 +97,8 @@
             <div class="flex flex-wrap gap-3 justify-between items-center">
               <div class="text-sm font-medium text-slate-500"><span id="q-progress">Waiting…</span></div>
               <div class="flex items-center gap-4">
-                <div class="text-sm font-semibold text-slate-700">A: <span id="score-a">0</span></div>
-                <div class="text-sm font-semibold text-slate-700">B: <span id="score-b">0</span></div>
+                <div class="text-sm font-semibold text-slate-700">A: <span id="score-a" class="inline-block text-base font-extrabold text-slate-900">0</span></div>
+                <div class="text-sm font-semibold text-slate-700">B: <span id="score-b" class="inline-block text-base font-extrabold text-slate-900">0</span></div>
               </div>
             </div>
             <div class="mt-4 h-2 rounded-full bg-slate-200 overflow-hidden">
@@ -95,8 +106,23 @@
             </div>
 
             <div class="mt-6">
-              <div id="question" class="text-2xl font-semibold leading-snug text-slate-900">Create a room to begin.</div>
+              <div id="question" class="text-3xl font-extrabold leading-snug tracking-tight text-slate-900 md:text-4xl">Create a room to begin.</div>
               <div id="reveal" class="hidden mt-4 p-4 rounded-xl border border-slate-200 bg-white"></div>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 gap-4 mt-6 md:grid-cols-3">
+            <div class="p-5 rounded-2xl border border-slate-200 bg-white/80">
+              <div class="text-sm font-semibold text-slate-700">Join</div>
+              <img id="qr-join" class="mt-3 w-full rounded-xl border border-slate-200 bg-white" alt="Join QR" />
+            </div>
+            <div class="p-5 rounded-2xl border border-slate-200 bg-white/80">
+              <div class="text-sm font-semibold text-slate-700">Team A</div>
+              <img id="qr-a" class="mt-3 w-full rounded-xl border border-slate-200 bg-white" alt="Team A QR" />
+            </div>
+            <div class="p-5 rounded-2xl border border-slate-200 bg-white/80">
+              <div class="text-sm font-semibold text-slate-700">Team B</div>
+              <img id="qr-b" class="mt-3 w-full rounded-xl border border-slate-200 bg-white" alt="Team B QR" />
             </div>
           </div>
 
@@ -108,4 +134,3 @@
     <script type="module" src="/src/host.js"></script>
   </body>
 </html>
-
